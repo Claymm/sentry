@@ -241,7 +241,7 @@ class Sentry {
 	 *
 	 * @return bool
 	 */
-	public function check()
+	public function check($requiresActivation = true)
 	{
 		if (is_null($this->user))
 		{
@@ -284,7 +284,7 @@ class Sentry {
 		}
 
 		// Let's check our cached user is indeed activated
-		if ( ! $user = $this->getUser() )
+		if ( ! $user = $this->getUser() || ($requiresActivation && !$user->isActivated()) )
 		{
 			return false;
 		}
