@@ -162,7 +162,7 @@ class Sentry {
 	 * @throws \Cartalyst\Sentry\Users\PasswordRequiredException
 	 * @throws \Cartalyst\Sentry\Users\UserNotFoundException
 	 */
-	public function authenticate(array $credentials, $remember = false)
+	public function authenticate(array $credentials, $remember = false, $requiresActivation = true)
 	{
 		// We'll default to the login name field, but fallback to a hard-coded
 		// 'login' key in the array that was passed.
@@ -220,7 +220,7 @@ class Sentry {
 
 		$user->clearResetPassword();
 
-		$this->login($user, $remember);
+		$this->login($user, $remember, $requiresActivation);
 
 		return $this->user;
 	}
@@ -284,7 +284,7 @@ class Sentry {
 		}
 
 		// Let's check our cached user is indeed activated
-		if ( ! $user = $this->getUser() or ! $user->isActivated())
+		if ( ! $user = $this->getUser() )
 		{
 			return false;
 		}
